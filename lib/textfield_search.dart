@@ -42,6 +42,10 @@ class TextFieldSearch extends StatefulWidget {
   /// A boolean used for deciding whether or not to clear TextField when unfocused
   final bool autoClear;
 
+  final double topSpace;
+
+  final Widget? loadingView;
+
   /// Creates a TextFieldSearch for displaying selected elements and retrieving a selected element
   const TextFieldSearch(
       {Key? key,
@@ -57,7 +61,9 @@ class TextFieldSearch extends StatefulWidget {
       this.scrollbarDecoration,
       this.itemsInView = 3,
       this.minStringLength = 2,
-      this.autoClear = true})
+      this.autoClear = true,
+      this.topSpace = 5,
+      this.loadingView})
       : super(key: key);
 
   @override
@@ -349,7 +355,7 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
               child: CompositedTransformFollower(
                 link: _layerLink,
                 showWhenUnlinked: false,
-                offset: Offset(0.0, overlaySize.height + 5.0),
+                offset: Offset(0.0, overlaySize.height + widget.topSpace),
                 child: Material(
                   elevation: 4.0,
                   color: widget.resultsBackgroundColor,
@@ -361,7 +367,7 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
                         maxHeight: calculateHeight().toDouble(),
                       ),
                       child: loading
-                          ? _loadingIndicator()
+                          ? widget.loadingView ?? _loadingIndicator()
                           : _listViewContainer(context)),
                 ),
               ),
